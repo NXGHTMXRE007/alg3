@@ -1,44 +1,69 @@
-﻿#include <iostream>
-#include <string>
+﻿
+#include <iostream>
 
 using namespace std;
 
 template <typename T>
-int linearSearch(T arr[], int n, const T& key) {
-    for (int i = 0; i < n; ++i) {
-        if (arr[i] == key) {
-            return i;
-        }
+class Vector {
+private:
+    T* data;
+    int size;
+
+public:
+    Vector() {
+        data = nullptr;
+        size = 0;
     }
-    return -1;
-}
+
+    Vector(int n, T arr[]) {
+        size = n;
+        data = new T[size]();
+        for (int i = 0; i < size; i++)
+            data[i] = arr[i];
+    }
+
+    Vector(const Vector& other) {
+        size = other.size;
+        data = new T[size];
+
+        for (int i = 0; i < size; i++)
+            data[i] = other.data[i];
+    }
+
+
+    ~Vector() {
+        delete[] data;
+    }
+
+    void swap(Vector& other) {
+        T* tempData = data;
+        data = other.data;
+        other.data = tempData;
+
+        int tempSize = size;
+        size = other.size;
+        other.size = tempSize;
+    }
+    void print() {
+        for (int i = 0; i < size; i++) {
+            cout << data[i]<< ' ';
+        }
+        cout << endl;
+    }
+};
 
 int main() {
-    setlocale(LC_ALL, "ru");
+    int Arr1[] = { 1, 2, 3, 4, 5 };
+    int Arr2[] = { 6, 7, 8, 9, 10 };
+    Vector a(5, Arr1);
+    Vector b(5, Arr2);
+    a.print();
+    b.print();
 
-    int intArr[] = { 10, 23, 45, 70, 11, 15 };
-    int intSize = sizeof(intArr) / sizeof(intArr[0]);
-    int intKey = 70;
-    int intResult = linearSearch(intArr, intSize, intKey);
-    cout << "Поиск числа " << intKey << " в массиве int:" << endl;
-    if (intResult != -1) {
-        cout << "Элемент найден под индексом: " << intResult << endl;
-    }
-    else {
-        cout << "Элемент не найден." << endl;
-    }
-    double doubleArr[] = { 3.14, 2.71, 1.41, 1.73 };
-    int doubleSize = sizeof(doubleArr) / sizeof(doubleArr[0]);
-    double doubleKey = 1.41;
+    a.swap(b);
 
-    int doubleResult = linearSearch(doubleArr, doubleSize, doubleKey);
-    cout << "Поиск числа " << doubleKey << " в массиве double:" << endl;
-    if (doubleResult != -1) {
-        cout << "Элемент найден под индексом: " << doubleResult << endl;
-    }
-    else {
-        cout << "Элемент не найден." << endl;
-    }
+    a.print();
+    b.print();
 
     return 0;
 }
